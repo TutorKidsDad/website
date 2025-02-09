@@ -40,12 +40,30 @@
       color: white;
       text-align: center;
     }
+    .searchbar {
+      margin-top: -10px;
+      float: right;
+      padding: 10px 0;
+    }
+    .searchbar input {
+      padding: 5px;
+      width: 200px;
+      border: none;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h3 class='center-align'>TutorKidsDad GitHub Repositories</h3>
+  <div class='row'>
+    <div class='col s12'>
+      <h3 class='left-align'>TutorKidsDad GitHub Repositories</h3>
+      <div class='searchbar'>
+        <input type='text' placeholder='Search Repositories' id='repo-search'>
+      </div>
+    </div>
+  </div>
 </header>
 
 <div class='container'>
