@@ -67,53 +67,7 @@
 </header>
 
 <div class='container' id='repo-container'>
-  <div class='row'>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="ESP32 Projects">
-      <h5>ESP32 Projects</h5>
-      <p>IoT and automation projects using ESP32 boards.</p>
-      <a href='https://github.com/TutorKidsDad/Esp32' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="ESP8266 Automation">
-      <h5>ESP8266 Automation</h5>
-      <p>Automation projects with ESP8266 for smart home solutions.</p>
-      <a href='https://github.com/TutorKidsDad/Esp8266' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="Arduino Projects">
-      <h5>Arduino Projects</h5>
-      <p>Robotics and electronics projects using Arduino.</p>
-      <a href='https://github.com/TutorKidsDad/Arduino' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="Python Scripts">
-      <h5>Python Scripts</h5>
-      <p>A collection of useful Python scripts and tutorials.</p>
-      <a href='https://github.com/TutorKidsDad/Python' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="Raspberry Pi Projects">
-      <h5>Raspberry Pi Projects</h5>
-      <p>Projects involving Raspberry Pi boards and sensors.</p>
-      <a href='https://github.com/TutorKidsDad/Raspberry-Pi' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="ESP32-Cam Projects">
-      <h5>ESP32-Cam Projects</h5>
-      <p>Camera and image processing projects using ESP32-Cam.</p>
-      <a href='https://github.com/TutorKidsDad/ESP32-Cam' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="Commercial Codes">
-      <h5>Commercial Codes</h5>
-      <p>List of commercial automation projects and codes.</p>
-      <a href='https://github.com/TutorKidsDad/Commercial-Codes' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="Best Practices for GitHub">
-      <h5>Best Practices for GitHub</h5>
-      <p>Guidelines on how to best arrange and maintain GitHub repositories.</p>
-      <a href='https://github.com/TutorKidsDad/Best-Practices-for-Arranging-GitHub-Repositories' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-    <div class='col s12 m6 l4 repo-card' data-repo-name="Linux Tutorials">
-      <h5>Linux Tutorials</h5>
-      <p>Scripts and guides for working with Linux systems.</p>
-      <a href='https://github.com/TutorKidsDad/Linux' class='waves-effect waves-light btn teal'>View Repo</a>
-    </div>
-  </div>
+  <!-- Repositories will be injected here dynamically -->
 </div>
 
 <footer>
@@ -121,19 +75,48 @@
 </footer>
 
 <script>
-  document.getElementById('repo-search').addEventListener('keyup', function() {
-    const searchQuery = this.value.toLowerCase();
-    const repos = document.querySelectorAll('.repo-card');
+  const repoContainer = document.getElementById('repo-container');
+  const searchInput = document.getElementById('repo-search');
 
-    repos.forEach(function(repo) {
-      const repoName = repo.getAttribute('data-repo-name').toLowerCase();
-      if (repoName.includes(searchQuery)) {
-        repo.style.display = '';
-      } else {
-        repo.style.display = 'none';
-      }
-    });
+  // Function to fetch and display repositories
+  function fetchRepositories(query = '') {
+    const url = `https://api.github.com/users/TutorKidsDad/repos?q=${query}`;
+    
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        repoContainer.innerHTML = '';  // Clear existing content
+        
+        // Check if there are results
+        if (data && data.length > 0) {
+          data.forEach(repo => {
+            const repoCard = `
+              <div class='col s12 m6 l4 repo-card'>
+                <h5>${repo.name}</h5>
+                <p>${repo.description ? repo.description : 'No description available'}</p>
+                <a href='${repo.html_url}' class='waves-effect waves-light btn teal'>View Repo</a>
+              </div>
+            `;
+            repoContainer.innerHTML += repoCard;
+          });
+        } else {
+          repoContainer.innerHTML = '<p>No repositories found.</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching repositories:', error);
+        repoContainer.innerHTML = '<p>Error fetching repositories. Please try again later.</p>';
+      });
+  }
+
+  // Event listener for search input
+  searchInput.addEventListener('keyup', function() {
+    const searchQuery = searchInput.value;
+    fetchRepositories(searchQuery);
   });
+
+  // Initial fetch of all repositories
+  fetchRepositories();
 </script>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
