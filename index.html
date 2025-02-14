@@ -60,7 +60,7 @@
     <div class='col s12'>
       <h3 class='left-align'>TutorKidsDad GitHub Repositories</h3>
       <div class='searchbar'>
-        <input type='text' placeholder='Search Repositories' id='repo-search'>
+        <input type='text' placeholder='Search Repository Files' id='repo-search'>
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@
 
 <div class='container'>
   <div class='row' id='repo-container'>
-    <!-- Repositories will be injected here dynamically -->
+    <!-- Search results will be injected here dynamically -->
   </div>
 </div>
 
@@ -80,55 +80,51 @@
   const repoContainer = document.getElementById('repo-container');
   const searchInput = document.getElementById('repo-search');
 
-  // Function to fetch and display repositories or search results
-  function fetchRepositories(query = '') {
-    let url = '';
-
-    // If there's a query, search in repositories' code and content
-    if (query) {
-      url = `https://api.github.com/search/code?q=${query}+repo:TutorKidsDad/Esp32`;  // Searching code and content in the ESP32 repository
-    } else {
-      url = 'https://api.github.com/users/TutorKidsDad/repos';  // Fetching all repositories
+  // Function to search within the repository files
+  function searchInRepository(query = '') {
+    if (!query) {
+      repoContainer.innerHTML = '<p>Please enter a search term to search in the repository.</p>';
+      return;
     }
+
+    // GitHub API endpoint for searching the repository's code and files
+    const url = `https://api.github.com/search/code?q=${query}+repo:TutorKidsDad/Esp32`;
 
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        const repos = query ? data.items : data;
-
-        repoContainer.innerHTML = '';  // Clear existing content
+        // Clear previous search results
+        repoContainer.innerHTML = '';  
         
-        if (repos && repos.length > 0) {
-          repos.forEach(repo => {
-            const repoCard = `
+        if (data && data.items && data.items.length > 0) {
+          data.items.forEach(item => {
+            const resultCard = `
               <div class='col s12 m4 l4'>
                 <div class='repo-card'>
-                  <h5>${repo.name}</h5>
-                  <p>${repo.path ? repo.path : 'No description available'}</p>
-                  <a href='${repo.html_url}' class='waves-effect waves-light btn teal'>View File</a>
+                  <h5>File: ${item.name}</h5>
+                  <p>Path: ${item.path}</p>
+                  <p>Repository: ${item.repository.full_name}</p>
+                  <a href='${item.html_url}' class='waves-effect waves-light btn teal'>View File</a>
                 </div>
               </div>
             `;
-            repoContainer.innerHTML += repoCard;
+            repoContainer.innerHTML += resultCard;
           });
         } else {
-          repoContainer.innerHTML = '<p>No results found.</p>';
+          repoContainer.innerHTML = '<p>No results found for the given search term.</p>';
         }
       })
       .catch(error => {
-        console.error('Error fetching repositories:', error);
-        repoContainer.innerHTML = '<p>Error fetching repositories. Please try again later.</p>';
+        console.error('Error searching the repository:', error);
+        repoContainer.innerHTML = '<p>Error searching the repository. Please try again later.</p>';
       });
   }
 
   // Event listener for search input
   searchInput.addEventListener('keyup', function() {
     const searchQuery = searchInput.value;
-    fetchRepositories(searchQuery);
+    searchInRepository(searchQuery);
   });
-
-  // Initial fetch of all repositories
-  fetchRepositories();
 </script>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
