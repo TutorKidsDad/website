@@ -1,132 +1,111 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <meta name='description' content='A showcase of GitHub repositories focused on various IoT, automation, and coding projects using ESP32, ESP8266, Raspberry Pi, and more.'>
-  <title>GitHub Repositories by TutorKidsDad</title>
-  <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css' rel='stylesheet'>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f5f5f5;
-    }
-    header {
-      background-color: #0288d1;
-      padding: 20px;
-      color: white;
-    }
-    .container {
-      margin-top: 20px;
-    }
-    .repo-card {
-      padding: 20px;
-      margin: 10px 0;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .repo-card h5 {
-      color: #0288d1;
-    }
-    .repo-card p {
-      color: #757575;
-    }
-    footer {
-      margin-top: 30px;
-      padding: 10px;
-      background-color: #0288d1;
-      color: white;
-      text-align: center;
-    }
-    .searchbar {
-      margin-top: -10px;
-      float: right;
-      padding: 10px 0;
-    }
-    .searchbar input {
-      padding: 5px;
-      width: 200px;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ESP32 Projects by TutorKidsDad">
+    <title>ESP32 Projects by TutorKidsDad</title>
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Material Design Lite CSS -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .mdl-layout__header {
+            background-color: #3F51B5;
+        }
+
+        .mdl-layout-title {
+            color: #FFFFFF;
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        .mdl-card {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .mdl-card__supporting-text {
+            font-size: 1rem;
+        }
+
+        .mdl-card__actions {
+            text-align: right;
+        }
+
+        footer {
+            background-color: #3F51B5;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+
 </head>
 <body>
 
-<header>
-  <div class='row'>
-    <div class='col s12'>
-      <h3 class='left-align'>TutorKidsDad GitHub Repositories</h3>
-      <div class='searchbar'>
-        <input type='text' placeholder='Search Repository Files' id='repo-search'>
-      </div>
-    </div>
-  </div>
-</header>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">ESP32 Projects by TutorKidsDad</span>
+            </div>
+        </header>
 
-<div class='container'>
-  <div class='row' id='repo-container'>
-    <!-- Search results will be injected here dynamically -->
-  </div>
-</div>
+        <main class="mdl-layout__content">
+            <div class="container">
+                <h3>Welcome to my ESP32 Project Repository</h3>
+                <p>Explore the various projects using ESP32 microcontrollers. You can find the source code and documentation below:</p>
 
-<footer>
-  <p>&copy; 2025 TutorKidsDad | IoT & Automation Projects</p>
-</footer>
-
-<script>
-  const repoContainer = document.getElementById('repo-container');
-  const searchInput = document.getElementById('repo-search');
-
-  // Function to search within the repository files
-  function searchInRepository(query = '') {
-    if (!query) {
-      repoContainer.innerHTML = '<p>Please enter a search term to search in the repository.</p>';
-      return;
-    }
-
-    // GitHub API endpoint for searching the repository's code and files
-    const url = `https://api.github.com/search/code?q=${query}+repo:TutorKidsDad/Esp32`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        // Clear previous search results
-        repoContainer.innerHTML = '';  
-        
-        if (data && data.items && data.items.length > 0) {
-          data.items.forEach(item => {
-            const resultCard = `
-              <div class='col s12 m4 l4'>
-                <div class='repo-card'>
-                  <h5>File: ${item.name}</h5>
-                  <p>Path: ${item.path}</p>
-                  <p>Repository: ${item.repository.full_name}</p>
-                  <a href='${item.html_url}' class='waves-effect waves-light btn teal'>View File</a>
+                <div class="mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__supporting-text">
+                        <h5><a href="https://github.com/TutorKidsDad/Esp32">ESP32 Repository</a></h5>
+                        <p>Find all the source code and instructions for my ESP32 projects in this GitHub repository.</p>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a href="https://github.com/TutorKidsDad/Esp32" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                            View Repository
+                        </a>
+                    </div>
                 </div>
-              </div>
-            `;
-            repoContainer.innerHTML += resultCard;
-          });
-        } else {
-          repoContainer.innerHTML = '<p>No results found for the given search term.</p>';
-        }
-      })
-      .catch(error => {
-        console.error('Error searching the repository:', error);
-        repoContainer.innerHTML = '<p>Error searching the repository. Please try again later.</p>';
-      });
-  }
 
-  // Event listener for search input
-  searchInput.addEventListener('keyup', function() {
-    const searchQuery = searchInput.value;
-    searchInRepository(searchQuery);
-  });
-</script>
+                <!-- Additional Projects can go here -->
+                <!-- Example project card -->
+                <div class="mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__supporting-text">
+                        <h5><a href="https://github.com/TutorKidsDad/Esp32/tree/main/Project1">Project 1: ESP32 Web Server</a></h5>
+                        <p>A simple web server using the ESP32 platform. Learn how to set up and control devices over the internet.</p>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a href="https://github.com/TutorKidsDad/Esp32/tree/main/Project1" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                            View Project
+                        </a>
+                    </div>
+                </div>
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
+                <!-- Add more cards for each project -->
+
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 TutorKidsDad | <a href="https://github.com/TutorKidsDad/Esp32" style="color: white;">GitHub Repository</a></p>
+        </footer>
+    </div>
+
+    <!-- Material Design Lite JavaScript -->
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
 </body>
 </html>
