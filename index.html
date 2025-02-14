@@ -66,8 +66,10 @@
   </div>
 </header>
 
-<div class='container' id='repo-container'>
-  <!-- Repositories will be injected here dynamically -->
+<div class='container'>
+  <div class='row' id='repo-container'>
+    <!-- Repositories will be injected here dynamically -->
+  </div>
 </div>
 
 <footer>
@@ -96,10 +98,12 @@
         if (repos && repos.length > 0) {
           repos.forEach(repo => {
             const repoCard = `
-              <div class='col s12 m6 l4 repo-card'>
-                <h5>${repo.name}</h5>
-                <p>${repo.description ? repo.description : 'No description available'}</p>
-                <a href='${repo.html_url}' class='waves-effect waves-light btn teal'>View Repo</a>
+              <div class='col s12 m4 l4'>
+                <div class='repo-card'>
+                  <h5>${repo.name}</h5>
+                  <p>${repo.description ? repo.description : 'No description available'}</p>
+                  <a href='${repo.html_url}' class='waves-effect waves-light btn teal'>View Repo</a>
+                </div>
               </div>
             `;
             repoContainer.innerHTML += repoCard;
