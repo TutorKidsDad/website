@@ -80,17 +80,20 @@
   const repoContainer = document.getElementById('repo-container');
   const searchInput = document.getElementById('repo-search');
 
-  // Function to fetch and display repositories
+  // Function to fetch and display repositories or search results
   function fetchRepositories(query = '') {
-    // GitHub API endpoint for fetching repositories from a user
-    const url = query 
-      ? `https://api.github.com/search/repositories?q=${query}+user:TutorKidsDad`
-      : 'https://api.github.com/users/TutorKidsDad/repos';
+    let url = '';
+
+    // If there's a query, search in repositories' code and content
+    if (query) {
+      url = `https://api.github.com/search/code?q=${query}+repo:TutorKidsDad/Esp32`;  // Searching code and content in the ESP32 repository
+    } else {
+      url = 'https://api.github.com/users/TutorKidsDad/repos';  // Fetching all repositories
+    }
 
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        // Check if the response is a search or normal repo list
         const repos = query ? data.items : data;
 
         repoContainer.innerHTML = '';  // Clear existing content
@@ -101,15 +104,15 @@
               <div class='col s12 m4 l4'>
                 <div class='repo-card'>
                   <h5>${repo.name}</h5>
-                  <p>${repo.description ? repo.description : 'No description available'}</p>
-                  <a href='${repo.html_url}' class='waves-effect waves-light btn teal'>View Repo</a>
+                  <p>${repo.path ? repo.path : 'No description available'}</p>
+                  <a href='${repo.html_url}' class='waves-effect waves-light btn teal'>View File</a>
                 </div>
               </div>
             `;
             repoContainer.innerHTML += repoCard;
           });
         } else {
-          repoContainer.innerHTML = '<p>No repositories found.</p>';
+          repoContainer.innerHTML = '<p>No results found.</p>';
         }
       })
       .catch(error => {
